@@ -63,15 +63,18 @@ namespace SMARTCustomOperations.AzureAuth
 
                     // Add cache for token context
                     services.AddMemoryCache();
-                    services.AddRedisCacheBackingStore(options =>
-                    {
-                        options.ConnectionString = config.CacheConnectionString;
-                    });
+                    
+                    //Disale redis cache
+                    //services.AddRedisCacheBackingStore(options =>
+                    //{
+                    //    options.ConnectionString = config.CacheConnectionString;
+                    //});
+                    
                     services.AddJsonObjectMemoryCache(options =>
                     {
                         options.CacheItemExpiry = TimeSpan.FromSeconds(3600);
                     });
-                    services.AddScoped<ContextCacheService>();
+                    //services.AddScoped<ContextCacheService>(); cache
 
                     // Use the toolkit Azure Function pipeline
                     services.UseAzureFunctionPipeline();

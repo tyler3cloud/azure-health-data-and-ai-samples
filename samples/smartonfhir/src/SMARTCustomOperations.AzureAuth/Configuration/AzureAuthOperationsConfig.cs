@@ -119,10 +119,10 @@ namespace SMARTCustomOperations.AzureAuth.Configuration
                 throw new ConfigurationErrorsException("ContextAppClientId must be configured for this application.");
             }
 
-            if (string.IsNullOrEmpty(CacheConnectionString))
-            {
-                throw new ConfigurationErrorsException("CacheConnectionString must be configured for this application.");
-            }
+            //if (string.IsNullOrEmpty(CacheConnectionString))
+            //{
+            //    throw new ConfigurationErrorsException("CacheConnectionString must be configured for this application.");
+            //}
         }
     }
 }

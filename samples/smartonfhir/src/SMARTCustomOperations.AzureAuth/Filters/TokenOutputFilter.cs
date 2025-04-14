@@ -19,14 +19,14 @@ namespace SMARTCustomOperations.AzureAuth.Filters
     {
         private readonly ILogger _logger;
         private readonly AzureAuthOperationsConfig _configuration;
-        private readonly ContextCacheService _cacheService;
+        //private readonly ContextCacheService _cacheService; redis
         private readonly string _id;
 
-        public TokenOutputFilter(ILogger<TokenOutputFilter> logger, AzureAuthOperationsConfig configuration, ContextCacheService cacheService)
+        public TokenOutputFilter(ILogger<TokenOutputFilter> logger, AzureAuthOperationsConfig configuration) // redis, ContextCacheService cacheService)
         {
             _logger = logger;
             _configuration = configuration;
-            _cacheService = cacheService;
+            //_cacheService = cacheService;
             _id = Guid.NewGuid().ToString();
         }
 
@@ -58,20 +58,20 @@ namespace SMARTCustomOperations.AzureAuth.Filters
                 // Add launch information from cache if exists
                 if (tokenResponse.UserId is not null)
                 {
-                    var cachedLaunchInfo = await _cacheService.GetLaunchCacheObjectAsync(tokenResponse.UserId);
-                    if (cachedLaunchInfo?.LaunchProperties is not null)
-                    {
-                        foreach (var launchProperty in cachedLaunchInfo.LaunchProperties)
-                        {
-                            tokenResponse.AddCustomProperty(launchProperty.Key, launchProperty.Value);
-                        }
+                    //var cachedLaunchInfo = await _cacheService.GetLaunchCacheObjectAsync(tokenResponse.UserId);
+                    //if (cachedLaunchInfo?.LaunchProperties is not null)
+                    //{
+                    //    foreach (var launchProperty in cachedLaunchInfo.LaunchProperties)
+                    //    {
+                    //        tokenResponse.AddCustomProperty(launchProperty.Key, launchProperty.Value);
+                    //    }
 
-                        await _cacheService.RemoveLaunchCacheObjectAsync(tokenResponse.UserId);
-                    }
-                    else if (_configuration.Debug)
-                    {
+                    //    await _cacheService.RemoveLaunchCacheObjectAsync(tokenResponse.UserId);
+                    //}
+                    //else if (_configuration.Debug)
+                    //{
                         _logger?.LogWarning($"No launch information found in cache for user {tokenResponse.UserId}");
-                    }
+                    //}
                 }
                 
                 context.ContentString = tokenResponse.ToString();
